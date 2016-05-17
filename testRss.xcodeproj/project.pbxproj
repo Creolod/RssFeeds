@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8503F0DB1CEB441E001B869C /* SearchDisplayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8503F0DA1CEB441E001B869C /* SearchDisplayVC.m */; };
 		85436CCD1CE5A5FC00F7B924 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 85436CCC1CE5A5FC00F7B924 /* main.m */; };
 		85436CD01CE5A5FC00F7B924 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 85436CCF1CE5A5FC00F7B924 /* AppDelegate.m */; };
 		85436CD61CE5A5FC00F7B924 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85436CD41CE5A5FC00F7B924 /* Main.storyboard */; };
@@ -48,6 +49,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8503F0D91CEB441E001B869C /* SearchDisplayVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchDisplayVC.h; sourceTree = "<group>"; };
+		8503F0DA1CEB441E001B869C /* SearchDisplayVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchDisplayVC.m; sourceTree = "<group>"; };
 		85436CC81CE5A5FC00F7B924 /* testRss.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = testRss.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85436CCC1CE5A5FC00F7B924 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		85436CCE1CE5A5FC00F7B924 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -214,6 +217,8 @@
 				854B5AF01CE73E9000BD71D7 /* RSSListVC.m */,
 				85EE5B201CE95F5800CC8C54 /* DetailVC.h */,
 				85EE5B211CE95F5800CC8C54 /* DetailVC.m */,
+				8503F0D91CEB441E001B869C /* SearchDisplayVC.h */,
+				8503F0DA1CEB441E001B869C /* SearchDisplayVC.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -379,6 +384,7 @@
 				85EB1D681CE918D700641C06 /* FeedsTableViewCell.m in Sources */,
 				85EE5B181CE9454600CC8C54 /* SDWebImagePrefetcher.m in Sources */,
 				85EE5B141CE9454600CC8C54 /* SDWebImageDecoder.m in Sources */,
+				8503F0DB1CEB441E001B869C /* SearchDisplayVC.m in Sources */,
 				85EE5B121CE9454600CC8C54 /* SDImageCache.m in Sources */,
 				85EE5B131CE9454600CC8C54 /* SDWebImageCompat.m in Sources */,
 				85EE5B1F1CE9454600CC8C54 /* UIView+WebCacheOperation.m in Sources */,

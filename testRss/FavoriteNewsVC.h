@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RSSArticle.h"
+#import "AllNewsVC.h"
 
-@interface FavoriteNewsVC : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface FavoriteNewsVC : AllNews <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableVIew;
+@property (strong, nonatomic) UISearchController *searchController;
+@property (strong, nonatomic) NSMutableArray *results;
+@property (strong, nonatomic) NSMutableArray<RSSArticle*> * feeds ;
 
 @end

@@ -7,11 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RSSArticle.h"
+@protocol UISearchResultsUpdating;
 
-
-@interface AllNewsVC : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface AllNewsVC : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UISearchBarDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *errorPlaceHolder;
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
+
+@property (strong, nonatomic) NSMutableArray *results;
+
+@property (strong, nonatomic) NSMutableArray<RSSArticle*> * feeds ;
+@property (strong, nonatomic) UISearchController *searchController;
 
 @end

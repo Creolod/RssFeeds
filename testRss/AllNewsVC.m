@@ -12,16 +12,17 @@
 #import "UIImageView+WebCache.h"
 #import "DetailVC.h"
 #import "RSSArticle.h"
+#import "SearchDisplayVC.h"
 
 @interface AllNewsVC (){
-    NSMutableArray<RSSArticle*> * feeds ;
     NSArray * array;
+    SearchDisplayVC * searchDisplay;
+    
 }
 
 @end
 
 @implementation AllNewsVC
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -33,7 +34,7 @@
 }
 
 -(void)preload{
-    feeds = [[NSMutableArray alloc] init];
+    _feeds = [[NSMutableArray alloc] init];
     [self getFeeds];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -41,9 +42,20 @@
     [self.tableView addSubview:refreshControl];
 }
 
+-(void)searchControllerLoad{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    searchDisplay = [storyboard instantiateViewControllerWithIdentifier:@"SearchResults"];
+    [self addObserver:searchDisplay forKeyPath:@"results" options:NSKeyValueObservingOptionNew context:nil];
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:searchDisplay];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.searchBar.delegate = self;
+    self.definesPresentationContext = YES;
+}
+
 -(void)getFeeds{
-    feeds = [[Facade sharedManager] getNews];
-    if (feeds.count == 0 || !feeds) {
+    _feeds = [[Facade sharedManager] updateNews];
+    if (_feeds.count == 0 || !_feeds) {
         self.errorPlaceHolder.hidden = NO;
         self.errorLabel.text = @"PULL DOWN TO REFRESH";
     } else {
@@ -80,15 +92,16 @@
 #pragma mark - Table View
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return feeds.count;
+    return _feeds.count;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    FeedsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
-    cell.title.text = [[feeds objectAtIndex:indexPath.row] title];
-    cell.textField.text = [[feeds objectAtIndex:indexPath.row] descr];
-//    cell.image.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[[feeds objectAtIndex:indexPath.row] imageUrl]]]];
-    [cell.image sd_setImageWithURL:[NSURL URLWithString:[[feeds objectAtIndex:indexPath.row] imageUrl]]];
+    NSMutableArray * tempArray = [[NSMutableArray alloc] init];
+    [tempArray addObjectsFromArray:_feeds];
+    FeedsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+    cell.title.text = [[tempArray objectAtIndex:indexPath.row] title];
+    cell.textField.text = [[tempArray objectAtIndex:indexPath.row] descr];
+    [cell.image sd_setImageWithURL:[NSURL URLWithString:[[tempArray objectAtIndex:indexPath.row] imageUrl]]];
     return cell;
 }
 
@@ -98,18 +111,19 @@
     if ([[segue identifier] isEqualToString:@"segueDetail"]) {
         DetailVC * detailVC = [segue destinationViewController];
         detailVC.feedNumber = [[self.tableView indexPathForCell:sender] row];
-        detailVC.feeds = feeds;
+        detailVC.feeds = _feeds;
     }
 }
 
-/*
+#pragma mark - search
 
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[c] %@ OR descr contains[c] %@", self.searchController.searchBar.text, self.searchController.searchBar.text];
+    self.results = [[_feeds filteredArrayUsingPredicate:predicate] mutableCopy];
 }
-*/
+- (IBAction)search:(id)sender {
+    [self presentViewController:self.searchController animated:YES completion:nil];
+}
 
 @end

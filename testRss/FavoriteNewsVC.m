@@ -13,10 +13,11 @@
 #import "UIImageView+WebCache.h"
 #import "RSSArticle.h"
 #import "DetailVC.h"
+#import "SearchDisplayVC.h"
 
 @interface FavoriteNewsVC (){
     NSMutableArray<RssFeed*>* coreDataFeeds;
-    NSMutableArray<RSSArticle*>* feeds;
+    SearchDisplayVC * searchDisplay;
 }
 
 @end
@@ -26,6 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableVIew.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    _results = [[NSMutableArray alloc] init];
     // Do any additional setup after loading the view.
 }
 
@@ -38,26 +40,36 @@
 }
 
 -(void)loadFeeds{
-    feeds = [[NSMutableArray alloc] init];
+    _feeds = [[NSMutableArray alloc] init];
     coreDataFeeds = [[Facade sharedManager] fetchFromCoreData:@"RssFeed"];
     for (RssFeed * feed in coreDataFeeds) {
-        [feeds addObject:[[RSSArticle alloc] initWithEntity:feed]];
+        [_feeds addObject:[[RSSArticle alloc] initWithEntity:feed]];
     }
     [self.tableVIew reloadData];
+}
+
+-(void)searchControllerLoad{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    searchDisplay = [storyboard instantiateViewControllerWithIdentifier:@"SearchResults"];
+    [self addObserver:searchDisplay forKeyPath:@"results" options:NSKeyValueObservingOptionNew context:nil];
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:searchDisplay];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.searchBar.delegate = self;
+    self.definesPresentationContext = YES;
 }
 
 #pragma mark - Table View
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return feeds.count;
+    return _feeds.count;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     FeedsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
-    cell.title.text = [[feeds objectAtIndex:indexPath.row] title];
-    cell.textField.text = [[feeds objectAtIndex:indexPath.row] descr];
-    //    cell.image.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[[feeds objectAtIndex:indexPath.row] imageUrl]]]];
-    [cell.image sd_setImageWithURL:[NSURL URLWithString:[[feeds objectAtIndex:indexPath.row] imageUrl]]];
+    cell.title.text = [[_feeds objectAtIndex:indexPath.row] title];
+    cell.textField.text = [[_feeds objectAtIndex:indexPath.row] descr];
+    [cell.image sd_setImageWithURL:[NSURL URLWithString:[[_feeds objectAtIndex:indexPath.row] imageUrl]]];
     return cell;
 }
 
@@ -67,8 +79,17 @@
     if ([[segue identifier] isEqualToString:@"segueDetail"]) {
         DetailVC * detailVC = [segue destinationViewController];
         detailVC.feedNumber = [[self.tableVIew indexPathForCell:sender] row];
-        detailVC.feeds = feeds;
+        detailVC.feeds = _feeds;
     }
+}
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[c] %@ OR descr contains[c] %@", self.searchController.searchBar.text, self.searchController.searchBar.text];
+    _results = [[_feeds filteredArrayUsingPredicate:predicate] mutableCopy];
+}
+- (IBAction)search:(id)sender {
+    [self presentViewController:self.searchController animated:YES completion:nil];
 }
 
 @end

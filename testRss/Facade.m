@@ -64,7 +64,7 @@
 
 #pragma mark - Parser
 
--(NSMutableArray*)getNews{
+-(NSMutableArray*)updateNews{
     return [parser getNews];
 }
 
