@@ -32,8 +32,6 @@ NSString * currentRssUrl;
 }
 
 -(NSMutableArray*)getNews{
-    defaultImageBool = YES;
-    defaultImageLink = [[NSMutableString alloc] init];
     feeds = [[NSMutableArray alloc]init];
     array = [[Facade sharedManager] getRssList];
     for (int i = 0; i < array.count; i++) {
@@ -47,7 +45,10 @@ NSString * currentRssUrl;
     return feeds;
 }
 
+
 -(BOOL)getNewsFromUrl:(NSString*)urlString{
+    defaultImageBool = YES;
+    defaultImageLink = [[NSMutableString alloc] init];
     NSURL *url = [NSURL URLWithString:urlString];
     parser = [[NSXMLParser alloc] initWithContentsOfURL:url];
     [parser setDelegate:self];
@@ -68,7 +69,10 @@ NSString * currentRssUrl;
         link    = [[NSMutableString alloc] init];
         imageLink = [[NSMutableString alloc] init];
         pubDate = [[NSDate alloc] init];
-        [imageLink setString:defaultImageLink];
+        if (defaultImageLink) {
+            
+            [imageLink setString:defaultImageLink];
+        }
     }
     if ([element isEqualToString:@"title"] && rssTitleBool){
         rssTitle   = [[NSMutableString alloc] init];

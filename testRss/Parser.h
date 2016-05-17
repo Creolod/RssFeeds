@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RSSArticle.h"
 
-@interface Parser : NSObject <NSXMLParserDelegate>{
+@interface Parser : NSObject <NSXMLParserDelegate, NSURLConnectionDelegate>{
     NSXMLParser* parser;
     RSSArticle* rssArticle;
     NSString* element;

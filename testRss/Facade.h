@@ -13,11 +13,12 @@
 
 @interface Facade : NSObject
 + (id)sharedManager;
--(void)addRss:(NSString*)rssUrl;
+-(BOOL)addRss:(NSString*)rssUrl;
 -(NSMutableArray*)getRssList;
 -(NSString*)getRssTitleFromUrl:(NSString*)url;
 -(NSMutableArray*)getNews;
 -(BOOL)getInternetStatus;
+-(BOOL)checkURL:(NSString*)url;
 
 
 //CoreDataManager

@@ -11,7 +11,7 @@
 
 @interface RSSManager : NSObject 
 
--(void)addRss:(NSString*)rssUrl;
+-(BOOL)addRss:(NSString*)rssUrl;
 + (NSMutableArray*)getRssList;
 
 

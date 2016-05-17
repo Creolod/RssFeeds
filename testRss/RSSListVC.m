@@ -37,32 +37,63 @@
 #pragma mark - IBActions
 
 - (IBAction)addButtonAction:(id)sender {
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"New RSS Link" message:@"Enter URL" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
-     {
-     }];
-    UIAlertAction *cancelAction = [UIAlertAction
-                                   actionWithTitle:@"Cancel"
+    if (![[Facade sharedManager] getInternetStatus]) {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Check your internet connection" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:@"OK"
                                    style:UIAlertActionStyleCancel
                                    handler:^(UIAlertAction *action){
                                    }];
-    
-    UIAlertAction *okAction = [UIAlertAction
-                               actionWithTitle:@"OK"
-                               style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *action){
-                                   UITextField *urlTF = alert.textFields.firstObject;
-                                   [self waitAction:YES];
-                                   [[Facade sharedManager] addRss:urlTF.text];
-                                   [self.tableView reloadData];
-                                   [self waitAction:NO];
-                                   [self viewWillDisappear:YES];
-                                   [self viewWillAppear:YES];
-                               }];
-    
-    [alert addAction:cancelAction];
-    [alert addAction:okAction];
-    [self presentViewController:alert animated:YES completion:nil];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    } else {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"New RSS Link" message:@"Enter URL" preferredStyle:UIAlertControllerStyleAlert];
+        [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
+         {
+         }];
+        UIAlertAction *cancelAction = [UIAlertAction
+                                       actionWithTitle:@"Cancel"
+                                       style:UIAlertActionStyleCancel
+                                       handler:^(UIAlertAction *action){
+                                       }];
+        
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action){
+                                       UITextField *urlTF = alert.textFields.firstObject;
+                                       [self waitAction:YES];
+                                       [self viewWillDisappear:YES];
+                                       [self viewWillAppear:YES];
+                                       if (![[Facade sharedManager] checkURL:urlTF.text]) {
+                                           UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Incorrect URL" preferredStyle:UIAlertControllerStyleAlert];
+                                           UIAlertAction *okAction = [UIAlertAction
+                                                                      actionWithTitle:@"OK"
+                                                                      style:UIAlertActionStyleCancel
+                                                                      handler:^(UIAlertAction *action){
+                                                                      }];
+                                           [alert addAction:okAction];
+                                           [self presentViewController:alert animated:YES completion:nil];
+                                       }
+                                       else if (![[Facade sharedManager] addRss:urlTF.text]) {
+                                           UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Incorrect RSS" preferredStyle:UIAlertControllerStyleAlert];
+                                           UIAlertAction *okAction = [UIAlertAction
+                                                                      actionWithTitle:@"OK"
+                                                                      style:UIAlertActionStyleCancel
+                                                                      handler:^(UIAlertAction *action){
+                                                                      }];
+                                           [alert addAction:okAction];
+                                           [self presentViewController:alert animated:YES completion:nil];
+                                       } else{
+                                           [self.tableView reloadData];
+                                       }
+                                       [self waitAction:NO];
+                                   }];
+        
+        [alert addAction:cancelAction];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (IBAction)longPressOnCell:(UILongPressGestureRecognizer *)sender {

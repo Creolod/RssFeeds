@@ -48,10 +48,14 @@
     return (networkStatus != NotReachable) ? YES :  NO;
 }
 
+-(BOOL)checkURL:(NSString*)url{
+    return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:url]];
+}
+
 #pragma mark - RSSManager
 
--(void)addRss:(NSString*)rssUrl{
-    [rssManager addRss:rssUrl];
+-(BOOL)addRss:(NSString*)rssUrl{
+    return [rssManager addRss:rssUrl];
 }
 
 -(NSMutableArray*)getRssList{

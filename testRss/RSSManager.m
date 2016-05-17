@@ -12,11 +12,15 @@
 
 @implementation RSSManager
 
--(void)addRss:(NSString*)rssUrl{
-    NSString * rssTitle = [[Facade sharedManager] getRssTitleFromUrl:rssUrl];
-    RssLinks * entity = (RssLinks*)[[Facade sharedManager] addEntityToCoreData:@"RssLinks"];
-    entity.name = rssTitle;
-    entity.url = rssUrl;
+-(BOOL)addRss:(NSString*)rssUrl{
+    NSString * rssTitle = [[NSString alloc] init];
+    if ((rssTitle = [[Facade sharedManager] getRssTitleFromUrl:rssUrl])){
+        RssLinks * entity = (RssLinks*)[[Facade sharedManager] addEntityToCoreData:@"RssLinks"];
+        entity.name = rssTitle;
+        entity.url = rssUrl;
+        return YES;
+    }
+    return NO;
 }
 
 + (NSMutableArray*)getRssList{
