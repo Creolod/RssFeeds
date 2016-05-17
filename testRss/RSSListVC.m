@@ -28,6 +28,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)waitAction:(BOOL)condition{
+    [self.loadingView setHidden:!condition];
+    if (condition) [self.activityIndicator startAnimating];
+    else [self.activityIndicator stopAnimating];
+}
+
+#pragma mark - IBActions
+
 - (IBAction)addButtonAction:(id)sender {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"New RSS Link" message:@"Enter URL" preferredStyle:UIAlertControllerStyleAlert];
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
@@ -57,35 +65,6 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
--(void)waitAction:(BOOL)condition{
-    [self.loadingView setHidden:!condition];
-    if (condition) [self.activityIndicator startAnimating];
-    else [self.activityIndicator stopAnimating];
-}
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    rssList = [[[Facade sharedManager] getRssList] mutableCopy];
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return rssList.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RssCell" forIndexPath:indexPath];
-    cell.textLabel.text = [[rssList objectAtIndex:indexPath.row] name];
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [[Facade sharedManager] deleteEntityFromCoreData:[rssList objectAtIndex:indexPath.row]];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
 - (IBAction)longPressOnCell:(UILongPressGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateBegan) {
         
@@ -125,5 +104,30 @@
         }
     }
 }
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    rssList = [[[Facade sharedManager] getRssList] mutableCopy];
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return rssList.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RssCell" forIndexPath:indexPath];
+    cell.textLabel.text = [[rssList objectAtIndex:indexPath.row] name];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [[Facade sharedManager] deleteEntityFromCoreData:[rssList objectAtIndex:indexPath.row]];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
 
 @end

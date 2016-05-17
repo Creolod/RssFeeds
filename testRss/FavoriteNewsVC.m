@@ -15,7 +15,8 @@
 #import "DetailVC.h"
 
 @interface FavoriteNewsVC (){
-    NSMutableArray<RssFeed*>* feeds;
+    NSMutableArray<RssFeed*>* coreDataFeeds;
+    NSMutableArray<RSSArticle*>* feeds;
 }
 
 @end
@@ -32,15 +33,20 @@
     [self loadFeeds];
 }
 
--(void)loadFeeds{
-    feeds = [[NSMutableArray alloc] init];
-    feeds = [[Facade sharedManager] fetchFromCoreData:@"RssFeed"];
-    [self.tableVIew reloadData];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
+-(void)loadFeeds{
+    feeds = [[NSMutableArray alloc] init];
+    coreDataFeeds = [[Facade sharedManager] fetchFromCoreData:@"RssFeed"];
+    for (RssFeed * feed in coreDataFeeds) {
+        [feeds addObject:[[RSSArticle alloc] initWithEntity:feed]];
+    }
+    [self.tableVIew reloadData];
+}
+
+#pragma mark - Table View
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return feeds.count;
@@ -55,21 +61,14 @@
     return cell;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"segueDetail"]) {
-        RSSArticle * article = [[RSSArticle alloc] initWithEntity:[feeds objectAtIndex:[[self.tableVIew indexPathForCell:sender] row]]];
-        DetailVC * detailVC = [segue destinationViewController];
-        detailVC.rssArticle = article;
-    }
-}
-/*
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:@"segueDetail"]) {
+        DetailVC * detailVC = [segue destinationViewController];
+        detailVC.feedNumber = [[self.tableVIew indexPathForCell:sender] row];
+        detailVC.feeds = feeds;
+    }
 }
-*/
 
 @end

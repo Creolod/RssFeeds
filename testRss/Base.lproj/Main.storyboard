@@ -84,7 +84,7 @@
         <!--DetailVC-->
         <scene sceneID="WJA-R7-6uX">
             <objects>
-                <viewController id="8RO-uZ-1VF" customClass="DetailVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8RO-uZ-1VF" customClass="DetailVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="uaF-mM-Bhr"/>
                         <viewControllerLayoutGuide type="bottom" id="WHp-iz-gE5"/>
@@ -187,13 +187,13 @@
                                             <mask key="constraints">
                                                 <exclude reference="m1e-61-pRP"/>
                                                 <exclude reference="uY4-O7-Qg0"/>
-                                                <exclude reference="Wh8-hl-5KF"/>
-                                                <exclude reference="dAK-He-TDd"/>
-                                                <exclude reference="xyl-MK-1fg"/>
                                                 <exclude reference="4kk-3t-o34"/>
                                                 <exclude reference="Fo6-U1-bbP"/>
                                                 <exclude reference="TX3-K1-vv3"/>
                                                 <exclude reference="uIK-S0-6w2"/>
+                                                <exclude reference="Wh8-hl-5KF"/>
+                                                <exclude reference="dAK-He-TDd"/>
+                                                <exclude reference="xyl-MK-1fg"/>
                                                 <exclude reference="f4q-Eh-qMB"/>
                                                 <exclude reference="h6Z-A8-THb"/>
                                             </mask>
@@ -208,13 +208,13 @@
                                             <mask key="constraints">
                                                 <include reference="m1e-61-pRP"/>
                                                 <include reference="uY4-O7-Qg0"/>
-                                                <include reference="Wh8-hl-5KF"/>
-                                                <include reference="dAK-He-TDd"/>
-                                                <include reference="xyl-MK-1fg"/>
                                                 <include reference="4kk-3t-o34"/>
                                                 <include reference="Fo6-U1-bbP"/>
                                                 <include reference="TX3-K1-vv3"/>
                                                 <include reference="uIK-S0-6w2"/>
+                                                <include reference="Wh8-hl-5KF"/>
+                                                <include reference="dAK-He-TDd"/>
+                                                <include reference="xyl-MK-1fg"/>
                                                 <include reference="f4q-Eh-qMB"/>
                                                 <include reference="h6Z-A8-THb"/>
                                             </mask>
@@ -262,6 +262,7 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="1k2-qp-w36" firstAttribute="top" secondItem="uaF-mM-Bhr" secondAttribute="bottom" id="3qO-TL-1Tl"/>
                             <constraint firstItem="0wQ-Qa-V5n" firstAttribute="bottom" secondItem="Qvu-UV-3MV" secondAttribute="bottomMargin" id="Je0-5b-vtl"/>
@@ -304,6 +305,10 @@
                                 <include reference="w7z-TR-xL5"/>
                             </mask>
                         </variation>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Po9-hu-j1M" appends="YES" id="iTG-z5-v0y"/>
+                            <outletCollection property="gestureRecognizers" destination="L4g-48-eo5" appends="YES" id="MJf-e5-E8h"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="AFq-1M-iiY">
                         <barButtonItem key="rightBarButtonItem" id="LsS-51-udg">
@@ -325,6 +330,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FWa-pw-p45" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="left" id="Po9-hu-j1M">
+                    <connections>
+                        <action selector="leftSwipe:" destination="8RO-uZ-1VF" id="flc-pg-cLW"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="L4g-48-eo5">
+                    <connections>
+                        <action selector="rightSwipe:" destination="8RO-uZ-1VF" id="B5N-le-ACU"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="763.5" y="-1114.5"/>
         </scene>
@@ -348,9 +363,6 @@
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
-                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                            <rect key="frame" x="179" y="321" width="44" height="21"/>
-                                        </variation>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -426,14 +438,14 @@
                                 <exclude reference="AdD-tt-taE"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="cSo-JZ-7Z9"/>
+                                <exclude reference="uJC-Wx-DyU"/>
                                 <exclude reference="3xH-Ga-0DV"/>
                                 <exclude reference="aR4-ZX-PpB"/>
                                 <exclude reference="ky1-U5-BVT"/>
                                 <exclude reference="Cv2-Cz-L4F"/>
                                 <exclude reference="MaY-kQ-Cb3"/>
                                 <exclude reference="NHO-bL-cZU"/>
-                                <exclude reference="cSo-JZ-7Z9"/>
-                                <exclude reference="uJC-Wx-DyU"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -442,19 +454,19 @@
                                 <include reference="AdD-tt-taE"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="cSo-JZ-7Z9"/>
+                                <include reference="uJC-Wx-DyU"/>
                                 <include reference="3xH-Ga-0DV"/>
                                 <include reference="aR4-ZX-PpB"/>
                                 <include reference="ky1-U5-BVT"/>
                                 <include reference="Cv2-Cz-L4F"/>
                                 <include reference="MaY-kQ-Cb3"/>
                                 <include reference="NHO-bL-cZU"/>
-                                <include reference="cSo-JZ-7Z9"/>
-                                <include reference="uJC-Wx-DyU"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="r4t-sc-VMS">
-                        <barButtonItem key="leftBarButtonItem" title="Settings" id="lAO-Fi-7Q8">
+                        <barButtonItem key="leftBarButtonItem" title="Subscriptions" id="lAO-Fi-7Q8">
                             <connections>
                                 <segue destination="2H4-j2-LSm" kind="show" id="feE-GG-lkx"/>
                             </connections>

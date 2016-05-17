@@ -12,6 +12,7 @@
 
 @interface DetailVC (){
     NSMutableArray * fetchResult;
+    RSSArticle * rssArticle;
 }
 
 @end
@@ -33,12 +34,12 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:NO];
     [self preload];
+    [self loadFeed];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:NO];
-    [self viewDidAppearLoad];
-    [self.placeHolder setHidden:YES];
+    [self setTextViewSizes];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -46,24 +47,29 @@
     [self.tabBarController.tabBar setHidden:NO];
 }
 
--(void)preload{
-    [self.tabBarController.tabBar setHidden:YES];
-    self.imageWidth.constant = self.view.frame.size.width * 0.4;
-    fetchResult = [[Facade sharedManager] fetchFromCoreData:@"RssFeed" withKey:@"title" andValue:self.rssArticle.title];
+-(void)loadFeed{
+    rssArticle = [_feeds objectAtIndex:_feedNumber];
+    fetchResult = [[Facade sharedManager] fetchFromCoreData:@"RssFeed" withKey:@"title" andValue:rssArticle.title];
     if (fetchResult.count > 0) {
         [self save:YES];
     } else{
         [self save:NO];
     }
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.textView.contentInset = UIEdgeInsetsMake(-10.0, 0, 0,0);
-    [self.textView setText:self.rssArticle.descr];
-    [self.titleTextView setText:self.rssArticle.title];
+    [self.textView setText:rssArticle.descr];
+    [self.titleTextView setText:rssArticle.title];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"dd MMM, yyyy"];
-    NSString *stringFromDate = [formatter stringFromDate:self.rssArticle.pubDate];
+    NSString *stringFromDate = [formatter stringFromDate:rssArticle.pubDate];
     self.dateLabel.text = stringFromDate;
-    self.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.rssArticle.imageUrl]]];
+    self.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:rssArticle.imageUrl]]];
+}
+
+-(void)preload{
+    [self.navigationController.interactivePopGestureRecognizer setEnabled:NO];
+    [self.tabBarController.tabBar setHidden:YES];
+    self.imageWidth.constant = self.view.frame.size.width * 0.4;
+    self.textView.contentInset = UIEdgeInsetsMake(-10.0, 0, 0,0);
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 -(void)save:(BOOL)cond{
@@ -75,24 +81,46 @@
     }
 }
 
--(void)viewDidAppearLoad{
+-(void)setTextViewSizes{
     UIBezierPath * imgRect = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.imageWidth.constant, self.imageWidth.constant)];
     self.textView.textContainer.exclusionPaths = @[imgRect];
-    
     CGSize textViewSize = [self.textView sizeThatFits:CGSizeMake(self.textView.frame.size.width, CGFLOAT_MAX)];
     self.heightConstraint.constant = textViewSize.height;
-    
     textViewSize = [self.titleTextView sizeThatFits:CGSizeMake(self.titleTextView.frame.size.width, CGFLOAT_MAX)];
     self.titleHeightConstraint.constant = textViewSize.height - 20;
+    [self.placeHolder setHidden:YES];
+}
+
+- (IBAction)leftSwipe:(UISwipeGestureRecognizer *)sender {
+    if (_feedNumber + 1 < _feeds.count) {
+        _feedNumber++;
+        [self.placeHolder setHidden:NO];
+        [self loadFeed];
+        [self setTextViewSizes];
+    } else {
+        NSLog(@"END");
+    }
+}
+- (IBAction)rightSwipe:(UISwipeGestureRecognizer *)sender {
+    if (_feedNumber - 1>= 0) {
+        _feedNumber--;
+        [self.placeHolder setHidden:NO];
+        [self loadFeed];
+        [self setTextViewSizes];
+    } else {
+        NSLog(@"BEGIN");
+    }
+    
 }
 
 - (IBAction)addFavoriteFeed:(id)sender {
     if (!savedBool) {
         RssFeed * rssFeed = (RssFeed*)[[Facade sharedManager] addEntityToCoreData:@"RssFeed"];
-        rssFeed.title = self.rssArticle.title;
-        rssFeed.descr = self.rssArticle.descr;
-        rssFeed.link = self.rssArticle.url;
-        rssFeed.imageUrl = self.rssArticle.imageUrl;
+        rssFeed.title = rssArticle.title;
+        rssFeed.descr = rssArticle.descr;
+        rssFeed.link = rssArticle.url;
+        rssFeed.imageUrl = rssArticle.imageUrl;
+        rssFeed.pubDate = rssArticle.pubDate;
         [self save:YES];
     } else{
         [[Facade sharedManager] deleteEntityFromCoreData:[fetchResult objectAtIndex:0]];
@@ -100,14 +128,5 @@
     }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

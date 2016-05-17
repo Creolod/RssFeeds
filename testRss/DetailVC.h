@@ -15,11 +15,13 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleHeightConstraint;
-@property (strong, nonatomic) RSSArticle * rssArticle;
+@property (assign, nonatomic) NSInteger feedNumber;
+@property (strong, nonatomic) NSMutableArray <RSSArticle*> * feeds;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addFavorite;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageWidth;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UIView *placeHolder;
+@property (assign, nonatomic) BOOL isItFromNewsFeed;
 
 @end

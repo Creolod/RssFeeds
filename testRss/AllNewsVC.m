@@ -28,6 +28,10 @@
     [self preload];
 }
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
 -(void)preload{
     feeds = [[NSMutableArray alloc] init];
     [self getFeeds];
@@ -72,9 +76,8 @@
     [refreshControl endRefreshing];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
+
+#pragma mark - Table View
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return feeds.count;
@@ -89,15 +92,18 @@
     return cell;
 }
 
+#pragma mark - Navigation
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"segueDetail"]) {
         DetailVC * detailVC = [segue destinationViewController];
-        detailVC.rssArticle = [feeds objectAtIndex:[[self.tableView indexPathForCell:sender] row]];
+        detailVC.feedNumber = [[self.tableView indexPathForCell:sender] row];
+        detailVC.feeds = feeds;
     }
 }
 
 /*
-#pragma mark - Navigation
+
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
