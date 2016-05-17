@@ -11,12 +11,13 @@
 #import "UIImageView+WebCache.h"
 #import "DetailVC.h"
 #import "Facade.h"
-#import "AllNewsVC.h"
+#import "NewsFeedRoot.h"
 
 @implementation SearchDisplayVC
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 
@@ -56,10 +57,14 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
-    self.searchResults = [(AllNewsVC*)object results];
-    self.allFeeds = [(AllNewsVC*)object feeds];
+    self.searchResults = [(NewsFeedRoot*)object results];
+    self.allFeeds = [(NewsFeedRoot*)object feeds];
     // extract array from observer
     [self.tableView reloadData];
+}
+-(void)dealloc{
+    [self.view removeFromSuperview];
+    NSLog(@"DEALLOC");
 }
 
 

@@ -9,6 +9,7 @@
 #import "Facade.h"
 #import "Parser.h"
 #import "RssLinks.h"
+#import "NSString+Common.h"
 
 @implementation Parser
 
@@ -87,8 +88,12 @@ NSString * currentRssUrl;
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
     
     if ([element isEqualToString:@"title"]) {
-        if (!rssTitleBool)
+        if (!rssTitleBool){
+            string = [string stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+            string = [string stringByReplacingOccurrencesOfString:@"  " withString:@" "];
+            NSLog(@"\%@",string);
             [title appendString:string];
+        }
         else
             [rssTitle appendString:string];
     }

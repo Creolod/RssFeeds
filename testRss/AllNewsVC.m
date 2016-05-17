@@ -27,6 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self preload];
+    [self searchControllerLoad];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,7 +35,7 @@
 }
 
 -(void)preload{
-    _feeds = [[NSMutableArray alloc] init];
+    self.feeds = [[NSMutableArray alloc] init];
     [self getFeeds];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -54,8 +55,8 @@
 }
 
 -(void)getFeeds{
-    _feeds = [[Facade sharedManager] updateNews];
-    if (_feeds.count == 0 || !_feeds) {
+    self.feeds = [[Facade sharedManager] updateNews];
+    if (self.feeds.count == 0 || !self.feeds) {
         self.errorPlaceHolder.hidden = NO;
         self.errorLabel.text = @"PULL DOWN TO REFRESH";
     } else {
@@ -92,12 +93,12 @@
 #pragma mark - Table View
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _feeds.count;
+    return self.feeds.count;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableArray * tempArray = [[NSMutableArray alloc] init];
-    [tempArray addObjectsFromArray:_feeds];
+    [tempArray addObjectsFromArray:self.feeds];
     FeedsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     cell.title.text = [[tempArray objectAtIndex:indexPath.row] title];
     cell.textField.text = [[tempArray objectAtIndex:indexPath.row] descr];
@@ -111,7 +112,7 @@
     if ([[segue identifier] isEqualToString:@"segueDetail"]) {
         DetailVC * detailVC = [segue destinationViewController];
         detailVC.feedNumber = [[self.tableView indexPathForCell:sender] row];
-        detailVC.feeds = _feeds;
+        detailVC.feeds = self.feeds;
     }
 }
 
@@ -120,7 +121,7 @@
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[c] %@ OR descr contains[c] %@", self.searchController.searchBar.text, self.searchController.searchBar.text];
-    self.results = [[_feeds filteredArrayUsingPredicate:predicate] mutableCopy];
+    self.results = [[self.feeds filteredArrayUsingPredicate:predicate] mutableCopy];
 }
 - (IBAction)search:(id)sender {
     [self presentViewController:self.searchController animated:YES completion:nil];

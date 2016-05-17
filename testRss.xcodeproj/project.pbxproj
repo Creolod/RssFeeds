@@ -25,6 +25,8 @@
 		854B5AF11CE73E9000BD71D7 /* RSSListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 854B5AF01CE73E9000BD71D7 /* RSSListVC.m */; };
 		85EB1D651CE9177900641C06 /* feedsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85EB1D641CE9177900641C06 /* feedsCell.xib */; };
 		85EB1D681CE918D700641C06 /* FeedsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EB1D671CE918D700641C06 /* FeedsTableViewCell.m */; };
+		85EDF00F1CEBC11C00BCA54B /* NewsFeedRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EDF00E1CEBC11C00BCA54B /* NewsFeedRoot.m */; };
+		85EDF0121CEBC8B600BCA54B /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EDF0111CEBC8B600BCA54B /* NSString+Common.m */; };
 		85EE5B101CE9454600CC8C54 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EE5AF01CE9454600CC8C54 /* MKAnnotationView+WebCache.m */; };
 		85EE5B111CE9454600CC8C54 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EE5AF21CE9454600CC8C54 /* NSData+ImageContentType.m */; };
 		85EE5B121CE9454600CC8C54 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EE5AF41CE9454600CC8C54 /* SDImageCache.m */; };
@@ -81,6 +83,10 @@
 		85EB1D641CE9177900641C06 /* feedsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = feedsCell.xib; sourceTree = "<group>"; };
 		85EB1D661CE918D700641C06 /* FeedsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedsTableViewCell.h; sourceTree = "<group>"; };
 		85EB1D671CE918D700641C06 /* FeedsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedsTableViewCell.m; sourceTree = "<group>"; };
+		85EDF00D1CEBC11C00BCA54B /* NewsFeedRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsFeedRoot.h; sourceTree = "<group>"; };
+		85EDF00E1CEBC11C00BCA54B /* NewsFeedRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsFeedRoot.m; sourceTree = "<group>"; };
+		85EDF0101CEBC8B600BCA54B /* NSString+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Common.h"; sourceTree = "<group>"; };
+		85EDF0111CEBC8B600BCA54B /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Common.m"; sourceTree = "<group>"; };
 		85EE5AEF1CE9454600CC8C54 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		85EE5AF01CE9454600CC8C54 /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		85EE5AF11CE9454600CC8C54 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -158,10 +164,10 @@
 		85436CCA1CE5A5FC00F7B924 /* testRss */ = {
 			isa = PBXGroup;
 			children = (
-				85F583E31CEA332C00EA4AA9 /* RSSArticle.h */,
-				85F583E41CEA332C00EA4AA9 /* RSSArticle.m */,
+				85EDF0131CEBDCDF00BCA54B /* RSSArticle */,
 				85436D011CE60E8B00F7B924 /* AppDelegate */,
 				85EB1D691CE919F200641C06 /* Xibs */,
+				85EDF0141CEBDCFE00BCA54B /* Category */,
 				85436D031CE60EA900F7B924 /* Managers */,
 				85436D021CE60E9D00F7B924 /* ViewControllers */,
 				85436CDA1CE5A5FC00F7B924 /* Assets.xcassets */,
@@ -219,6 +225,8 @@
 				85EE5B211CE95F5800CC8C54 /* DetailVC.m */,
 				8503F0D91CEB441E001B869C /* SearchDisplayVC.h */,
 				8503F0DA1CEB441E001B869C /* SearchDisplayVC.m */,
+				85EDF00D1CEBC11C00BCA54B /* NewsFeedRoot.h */,
+				85EDF00E1CEBC11C00BCA54B /* NewsFeedRoot.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -248,6 +256,24 @@
 				85EB1D671CE918D700641C06 /* FeedsTableViewCell.m */,
 			);
 			name = Xibs;
+			sourceTree = "<group>";
+		};
+		85EDF0131CEBDCDF00BCA54B /* RSSArticle */ = {
+			isa = PBXGroup;
+			children = (
+				85F583E31CEA332C00EA4AA9 /* RSSArticle.h */,
+				85F583E41CEA332C00EA4AA9 /* RSSArticle.m */,
+			);
+			name = RSSArticle;
+			sourceTree = "<group>";
+		};
+		85EDF0141CEBDCFE00BCA54B /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				85EDF0101CEBC8B600BCA54B /* NSString+Common.h */,
+				85EDF0111CEBC8B600BCA54B /* NSString+Common.m */,
+			);
+			name = Category;
 			sourceTree = "<group>";
 		};
 		85EE5AEE1CE9454600CC8C54 /* SDWebImage */ = {
@@ -371,7 +397,9 @@
 				85436CF91CE60D0100F7B924 /* CoreDataManager.m in Sources */,
 				85EE5B151CE9454600CC8C54 /* SDWebImageDownloader.m in Sources */,
 				85436CFE1CE60E5600F7B924 /* RssLinks+CoreDataProperties.m in Sources */,
+				85EDF0121CEBC8B600BCA54B /* NSString+Common.m in Sources */,
 				85436CD01CE5A5FC00F7B924 /* AppDelegate.m in Sources */,
+				85EDF00F1CEBC11C00BCA54B /* NewsFeedRoot.m in Sources */,
 				85436CCD1CE5A5FC00F7B924 /* main.m in Sources */,
 				85436CF31CE5DEEB00F7B924 /* FavoriteNewsVC.m in Sources */,
 				85EE5B101CE9454600CC8C54 /* MKAnnotationView+WebCache.m in Sources */,

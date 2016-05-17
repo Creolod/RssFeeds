@@ -67,7 +67,7 @@
 -(void)preload{
     [self.navigationController.interactivePopGestureRecognizer setEnabled:NO];
     [self.tabBarController.tabBar setHidden:YES];
-    self.imageWidth.constant = self.view.frame.size.width * 0.4;
+    self.imageWidth.constant = self.view.frame.size.width * 0.45;
     self.textView.contentInset = UIEdgeInsetsMake(-10.0, 0, 0,0);
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
@@ -87,7 +87,7 @@
     CGSize textViewSize = [self.textView sizeThatFits:CGSizeMake(self.textView.frame.size.width, CGFLOAT_MAX)];
     self.heightConstraint.constant = textViewSize.height;
     textViewSize = [self.titleTextView sizeThatFits:CGSizeMake(self.titleTextView.frame.size.width, CGFLOAT_MAX)];
-    self.titleHeightConstraint.constant = textViewSize.height - 20;
+    self.titleHeightConstraint.constant = textViewSize.height;
     [self.placeHolder setHidden:YES];
 }
 
@@ -126,6 +126,12 @@
         [[Facade sharedManager] deleteEntityFromCoreData:[fetchResult objectAtIndex:0]];
         [self save:NO];
     }
+}
+- (IBAction)sendAction:(id)sender {
+    NSString * string = [NSString stringWithFormat:@"%@ | %@", rssArticle.title, rssArticle.url];
+    UIActivityViewController *avc = [[UIActivityViewController alloc] initWithActivityItems:@[string] applicationActivities:nil];
+    avc.excludedActivityTypes = @[];
+    [self presentViewController:avc animated:YES completion:nil];
 }
 
 

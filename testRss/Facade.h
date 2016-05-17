@@ -17,7 +17,6 @@
 -(NSMutableArray*)getRssList;
 -(NSString*)getRssTitleFromUrl:(NSString*)url;
 -(NSMutableArray*)updateNews;
--(NSMutableArray*)getNews;
 -(BOOL)getInternetStatus;
 -(BOOL)checkURL:(NSString*)url;
 
